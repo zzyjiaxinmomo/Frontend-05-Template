@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TicTacToe</title>
+  </head>
+  <style>
+    .cell {
+      width: 100px;
+      height: 100px;
+      background-color: grey;
+      display: inline-block;
+      border: 1px solid black;
+      vertical-align: middle;
+      line-height: 100px;
+      font-size: 50px;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <div id="board"></div>
+  </body>
+</html>
+<script>
+  let color = 1;
+  let pattern = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  // 棋盘渲染
+  function show() {
+    let board = document.getElementById('board');
+    board.innerHTML = '';
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        let cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.innerText = pattern[i * 3 + j] == 2 ? 'x' : pattern[i * 3 + j] == 1 ? 'o' : '';
+        cell.addEventListener('click', () => {
+          move(i, j);
+        });
+        board.appendChild(cell);
+      }
+      board.appendChild(document.createElement('br'));
+    }
+  }
+  // 落子，先后手o或x
+  function move(x, y) {
+    pattern[3 * x + y] = color;
+    if (checkWin(pattern, color)) {
+      alert(color === 2 ? 'x is winner' : 'o is winner');
+    }
+    color = 3 - color;
+    console.log(bestChoice(pattern, color));
+    show();
+    if (willWin(pattern, color)) {
+      alert(color === 2 ? 'x will win' : 'o will win');
+    }
+  }
+  // 判断是否胜利
+  function checkWin(pattern, color) {
+    // 判断每一横行是否相同
+    for (let i = 0; i < 3; i++) {
+      let win = true;
+      for (let j = 0; j < 3; j++) {
+        if (pattern[3 * i + j] !== color) {
+          win = false;
+        }
+      }
+      if (win) {
+        return true;
+      }
+    }
+    // 判断每一纵行是否相同
+    for (let i = 0; i < 3; i++) {
+      let win = true;
+      for (let j = 0; j < 3; j++) {
+        if (pattern[3 * j + i] !== color) {
+          win = false;
+        }
+      }
+      if (win) {
+        return true;
+      }
+    }
+    // 判断左上到右下的斜线
+    {
+      let win = true;
+      for (let i = 0; i < 3; i++) {
+        if (pattern[3 * i + i] !== color) {
+          win = false;
+        }
+      }
+      if (win) {
+        return true;
+      }
+    }
+    // 判断右上到左下的斜线
+    {
+      let win = true;
+      for (let i = 0; i < 3; i++) {
+        if (pattern[3 * i + (2 - i)] !== color) {
+          win = false;
+        }
+      }
+      if (win) {
+        return true;
+      }
+    }
+    return false;
+  }
+  // 判断是否会有某个
+  function willWin(pattern, color) {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (pattern[3 * i + j]) {
+          continue;
+        }
+        let temp = clone(pattern);
+        temp[3 * i + j] = color;
+        if (checkWin(temp, color)) {
+          return 3 * i + j;
+        }
+      }
+    }
+    return false;
+  }
+  function clone(arr) {
+    return JSON.parse(JSON.stringify(arr));
+  }
+  // 递归遍历整个棋盘，返回result为0时表示和棋，1表示按照point位置落子会赢
+  function bestChoice(pattern, color) {
+    let p;
+    if ((p = willWin(pattern, color))) {
+      return {
+        point: p,
+        result: 1,
+      };
+    }
+    let result = -2;
+    let point = null;
+    outer: for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (pattern[3 * i + j]) {
+          continue;
+        }
+        let temp = clone(pattern);
+        temp[3 * i + j] = color;
+        let res = bestChoice(temp, 3 - color).result;
+        if (-res > result) {
+          result = -res;
+          point = 3 * j + i;
+        }
+        if (result === 1) {
+          break outer;
+        }
+      }
+    }
+    return {
+      point: point,
+      result: point ? result : 0,
+    };
+  }
+  show(pattern);
+</script>
