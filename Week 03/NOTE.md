@@ -12,13 +12,21 @@
 
 ### 产生式规则
 
-- ```<Expression>::=
-  <AdditiveExpression><EOF>```
-- ```<AdditiveExpression>::=
-  <MultiplicativeExpression>
-  |<AdditiveExpression><+><MultiplicativeExpression>
-  |<AdditiveExpression><-><MultiplicativeExpression>```
-- ```<MulitplicativeExpression>::=
+```
+<Expression>::=
+  <AdditiveExpression><EOF>
+```
+
+```
+<AdditiveExpression>::=
+ <MultiplicativeExpression>
+ |<AdditiveExpression><+><MultiplicativeExpression>
+ |<AdditiveExpression><-><MultiplicativeExpression>
+```
+
+```
+<MulitplicativeExpression>::=
   <Number>
   |<MultiplicationExpression><*><Number>
-  |<MultiplicationExpression></><Number>```
+  |<MultiplicationExpression></><Number>
+```
