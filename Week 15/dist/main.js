@@ -27,8 +27,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var element = document.documentElement;
-var isListeningMouse = false; // listen => recognize => dispatch
+// let element = document.documentElement;
+// let isListeningMouse = false;
+// listen => recognize => dispatch
 // new Listener(new Recognizer(dispatch))
 // document.addEventListener('mousedown', (event) => {
 //   // 按下哪个键
@@ -190,7 +191,6 @@ var isListeningMouse = false; // listen => recognize => dispatch
 //   }
 //   element.dispatchEvent(event);
 // }
-
 var Dispatcher = /*#__PURE__*/function () {
   function Dispatcher(element) {
     _classCallCheck(this, Dispatcher);
@@ -462,6 +462,7 @@ var Recognizer = /*#__PURE__*/function () {
   }, {
     key: "cancel",
     value: function cancel(point, context) {
+      clearTimeout(context.handler);
       this.dispatcher.dispatch('cancel', {});
     }
   }]);
