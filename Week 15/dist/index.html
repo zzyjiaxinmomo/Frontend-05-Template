@@ -1,9 +1,10 @@
-<body oncontextmenu="event.preventDefault()"><script src="main.js"></script></body>
+<body oncontextmenu="event.preventDefault()">
+</body>
 <!-- <script src="./gesture.js"></script> -->
 <script type="module">
-  import { enableGesture } from './gesture.js';
+  import { enableGesture } from "./gesture.js";
   enableGesture(document.documentElement);
-  document.documentElement.addEventListener('tap', () => {
-    console.log('tap event trigger');
+  document.documentElement.addEventListener("tap", () => {
+    console.log("tap event trigger");
   });
 </script>
